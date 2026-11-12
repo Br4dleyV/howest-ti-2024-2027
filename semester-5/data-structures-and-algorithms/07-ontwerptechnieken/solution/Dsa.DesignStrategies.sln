@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36511.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dsa.DesignStrategies.Cons", "Dsa.DesignStrategies.Cons\Dsa.DesignStrategies.Cons.csproj", "{929523CC-908C-4B5F-8D71-DAB90D47DA39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dsa.DesignStrategies.Core", "Dsa.DesignStrategies.Core\Dsa.DesignStrategies.Core.csproj", "{F9D5DF44-C3B4-4931-ACFE-2B4D1C55643E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{929523CC-908C-4B5F-8D71-DAB90D47DA39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{929523CC-908C-4B5F-8D71-DAB90D47DA39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{929523CC-908C-4B5F-8D71-DAB90D47DA39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{929523CC-908C-4B5F-8D71-DAB90D47DA39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9D5DF44-C3B4-4931-ACFE-2B4D1C55643E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9D5DF44-C3B4-4931-ACFE-2B4D1C55643E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9D5DF44-C3B4-4931-ACFE-2B4D1C55643E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9D5DF44-C3B4-4931-ACFE-2B4D1C55643E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7E139240-323E-4743-9992-4336FA9A0C37}
+	EndGlobalSection
+EndGlobal
