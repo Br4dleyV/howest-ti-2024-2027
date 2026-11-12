@@ -1,0 +1,9 @@
+image: registry.ci.infra.lan:5000/web-development-fundamentals:1.0
+
+stages:
+  - QA
+
+validateHTML:
+  stage: QA
+  script:
+    - java -jar /vnu.jar --skip-non-html ./

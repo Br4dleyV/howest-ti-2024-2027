@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pokémon: Gotta catch 'em all</title>
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/screen.css">
+    <script type="module" src="./assets/js/script.js"></script>
+</head>
+
+<body>
+
+    <header>
+        <h1>Choose your Pokémon to catch!</h1>
+        <img src="images/logo.png" alt="Pokémon" title="Pokémon">
+    </header>
+
+    <main>
+        <h2>Apply your filter criteria</h2>
+        <form id="poke-form" method="get" action="#">
+            <label for="poke-size">Filter by size:</label>
+            <select id="poke-size"></select>
+            <label for="poke-type">Filter by type:</label>
+            <select id="poke-type"></select>
+            <label for="poke-match">Matching Pokémon:</label>
+            <select id="poke-match"></select>
+            <input type="submit" value="Catch!">
+        </form>
+
+        <h2>Pokémon caught</h2>
+
+        <div id="poke-catch">
+            <!-- Template -->
+            <template id="poke-template">
+                <figure>
+                    <img src="" alt="">
+                    <figcaption></figcaption>
+                </figure>
+            </template>
+        </div>
+    </main>
+
+</body>
+
+</html>

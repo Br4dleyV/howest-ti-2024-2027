@@ -1,0 +1,33 @@
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+#container {
+    width: 50%;
+    margin: 3rem auto;
+    background-color: #e8e7e7;
+}
+
+#container, form {
+    border-radius: 1rem;
+    padding: 2rem;
+}
+
+form {
+    background-color: lightgray;
+}
+
+h1 {
+    padding-left: 4rem;
+    margin-bottom: 1rem;
+    background-image: url("../media/medieval-castle.png");
+    background-repeat: no-repeat;
+    background-size: 3rem;
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+p#result {
+    margin-top: 1rem;
+    font-weight: bold;
+}

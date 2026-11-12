@@ -1,0 +1,1 @@
+[{"source":"/Users/frederic/Development/wde/sonartester-lokaal/src/assets/css/screen.css","deprecations":[],"invalidOptionWarnings":[{"text":"Invalid option name \"ignoreProperties\" for rule \"declaration-block-no-redundant-longhand-properties\""}],"parseErrors":[],"errored":true,"warnings":[]}]

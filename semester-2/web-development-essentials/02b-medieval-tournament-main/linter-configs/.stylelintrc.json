@@ -1,0 +1,29 @@
+{
+  "extends": "stylelint-config-standard",
+  "plugins": [
+    "stylelint-scss"
+  ],
+  "rules": {
+    "declaration-no-important": true,
+    "declaration-block-no-redundant-longhand-properties": [
+      true,
+      {
+        "ignoreProperties": [
+          "grid-template-areas",
+          "grid-template-rows",
+          "grid-template-columns"
+        ]
+      }
+    ],
+    "property-disallowed-list": ["position", "float"],
+    "unit-disallowed-list": ["px","pt","cm","mm","in","pc"],
+    "selector-disallowed-list": ["*"],
+    "no-descending-specificity": null,
+    "value-keyword-case": [
+      "lower",
+      {
+        "ignoreProperties": ["/^--/"]
+      }
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Control</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/screen.css">
+
+    <script type="module" src="assets/js/script.js"></script>
+</head>
+<body>
+
+    <div id="container">
+
+        <header>
+            <h1>🚀 Mission Control</h1>
+            <h2>Restricted control system for authorized personnel only</h2>
+        </header>
+
+        <main>
+            <ul id="errors"></ul>
+
+            <form>
+                <fieldset>
+                    <legend>General information</legend>
+
+                    <label for="captain">Captain e-mail address:</label>
+                    <input type="email" id="captain" maxlength="255" required>
+                    
+                    <label for="destination">Mission destination:</label>
+                    <select id="destination"></select>    
+                </fieldset>
+                <fieldset>
+                    <legend>Select astronaut(s)</legend>
+
+                    <ul id="astronauts">
+                    </ul>
+                </fieldset>
+                <fieldset>
+                    <legend>Launch mission</legend>
+                    <input type="submit" value="Execute">
+                </fieldset>
+            </form>
+
+            <p id="results"></p>
+        </main>
+
+        <footer>
+            © 2024 Howest University of Applied Sciences
+        </footer>
+
+    </div>
+    
+</body>
+</html>

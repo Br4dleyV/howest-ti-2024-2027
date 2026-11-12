@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Mission</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/screen.css">
+    <script type="module" src="assets/js/script.js"></script>
+</head>
+<body>
+    
+    <div id="container">
+        <header>
+            <h1>Space Mission</h1>
+        </header>
+
+        <main>
+            <form action="#" method="get">
+                <fieldset>
+                    <legend>Mission setup</legend>
+
+                    <label for="mission-type">Mission type:</label>
+                    <select id="mission-type">
+                        <option value="0" disabled selected>Select mission type</option>
+                    </select>
+
+                    <p id="mission-description" class="hidden"></p>
+                </fieldset>
+                <fieldset>
+                    <legend>Select crew</legend>
+
+                    <ul id="crew-configuration"></ul>
+                </fieldset>
+                <fieldset>
+                    <legend>Execute mission</legend>
+
+                    <input type="submit" value="Launch!">
+                </fieldset>
+            </form>
+
+            <section id="mission-report" class="hidden">
+                <h2>Mission report</h2>
+
+                <p id="mission-report-text"></p>
+            </section>
+        </main>
+
+        <footer>
+            © Howest University of Applied Sciences<br>Icons courtesy of Freepik.com
+        </footer>
+    </div>
+
+</body>
+</html>

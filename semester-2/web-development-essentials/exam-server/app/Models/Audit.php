@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Model;
+
+class Audit extends Model
+{
+    use HasUuids;
+
+    protected $fillable = [
+        'organization_id',
+        'email',
+        'report',
+        'success'
+    ];
+}
