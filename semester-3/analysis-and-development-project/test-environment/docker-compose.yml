@@ -1,0 +1,57 @@
+name: skynet
+
+services:
+  server:
+    image: hcr.technet.howest.be/adria-server-group-04:latest
+    pull_policy: always
+    container_name: skynet_server
+    networks:
+      - skynet_network
+    ports:
+      - "8000:8000"
+    env_file:
+      - .skynet.env
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  client:
+    image: hcr.technet.howest.be/adria-client-group-04:latest
+    pull_policy: always
+    container_name: skynet_client
+    ports:
+      - "80:80"
+    networks:
+      - skynet_network
+    env_file:
+      - .skynet.env
+    depends_on:
+      - server
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.0
+    container_name: skynet_db
+    env_file:
+      - .skynet.env
+    networks:
+      - skynet_network
+    healthcheck:
+      test: [
+          "CMD-SHELL",
+          "mysqladmin ping -h localhost -p$${MYSQL_ROOT_PASSWORD}",
+        ]
+      interval: 10s 
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+networks:
+  skynet_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local
+

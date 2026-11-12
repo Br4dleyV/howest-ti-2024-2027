@@ -1,0 +1,34 @@
+stages:
+  - QA
+  - deploy
+
+cache:
+  key: $CI_COMMIT_REF_SLUG
+  paths:
+    - node_modules/
+
+SonarQube:
+  image: registry.ci.infra.lan:5000/project-2:client-QA
+  stage: QA
+  script:
+    - npm ci
+    - echo "Running prettier formatting check"
+    - npx prettier --check src/
+    - echo "Running SonarQube analysis..."
+    - npm run sonar-ci
+
+build-client:
+  image: registry.ci.infra.lan:5000/ad-project:server-DEPLOY
+  stage: deploy
+  only:
+    - main
+  services:
+    - name: docker:dind
+  tags:
+    - docker
+  variables:
+    DOCKER_TLS_CERTDIR: ''
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" hcr.technet.howest.be
+    - docker build --build-arg BUILD_ENV=test -t hcr.technet.howest.be/adria-client-group-04:latest .
+    - docker push hcr.technet.howest.be/adria-client-group-04:latest

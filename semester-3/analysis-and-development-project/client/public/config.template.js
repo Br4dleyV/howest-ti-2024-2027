@@ -1,0 +1,4 @@
+window.__APP_CONFIG__ = {
+  API_URL: "$API_URL",
+  VAPID_PUBLIC_KEY: "$VAPID_PUBLIC_KEY"
+};

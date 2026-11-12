@@ -1,0 +1,337 @@
+.destination-search {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  background: var(--background-color);
+  color: var(--primary-color);
+  height: 100vh;
+}
+
+.destination-search section:not(:last-child) {
+  margin-bottom: 1.7rem;
+}
+
+.dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 9999px;
+  flex-shrink: 0;
+}
+
+.from {
+  background: var(--color-green-500);
+}
+
+.to {
+  background: var(--color-cyan-500);
+}
+
+address {
+  background: var(--color-gray-900-a50);
+  border: 1px solid var(--color-cyan-500-a20);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  color: var(--color-cyan-100);
+  display: block;
+  font-style: normal;
+  font-size: 1.05rem;
+}
+
+form {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  background: var(--color-gray-900-a50);
+  border: 1px solid var(--color-cyan-500-a20);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+form svg {
+  flex-shrink: 0;
+  color: var(--color-cyan-400);
+}
+
+input {
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--color-cyan-100);
+  font-size: 1rem;
+  flex: 1;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+.suggestions-title {
+  color: var(--primary-color);
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.suggestions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 47dvh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.suggestions-list li {
+  width: 100%;
+}
+
+.suggestion {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  background: var(--color-gray-900-a50);
+  border: 1px solid var(--color-cyan-500-a20);
+  border-radius: 0.75rem;
+  padding: 1rem 1.2rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.suggestion:hover {
+  border-color: var(--color-cyan-500-a50);
+  background: var(--color-gray-800-a50);
+}
+
+.icon-wrap {
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 9999px;
+  background: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pod-confirm-card .icon-wrap {
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 9999px;
+  background: var(--color-cyan-500-a20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.8rem;
+}
+
+.suggestion:hover .icon-wrap {
+  background: var(--primary-color);
+}
+
+.suggestion-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.suggestion-name {
+  color: var(--color-cyan-100);
+  font-weight: bold;
+  font-size: 1.12rem;
+  margin-bottom: 0.13rem;
+  word-break: break-word;
+}
+
+.header-wrap {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.suggestion-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.18rem;
+  font-size: 0.93rem;
+  color: var(--primary-color);
+}
+
+.suggestion-distance,
+.suggestion-eta {
+  display: flex;
+  align-items: center;
+  gap: 0.23rem;
+}
+
+.badge {
+  border-width: 1px;
+  border-style: solid;
+  padding: 0.26rem 0.82rem;
+  border-radius: 9999px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  margin-left: 0.55rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.badge[data-type='SkyNet'] {
+  background: var(--color-cyan-500-a20);
+  color: var(--color-cyan-400);
+  border-color: var(--color-cyan-500-a30);
+}
+
+.badge[data-type='SkyLane'] {
+  background: var(--color-red-500-a20);
+  color: var(--color-red-400);
+  border-color: var(--color-red-500-a30);
+}
+
+.badge[data-type='CityHover'] {
+  background: var(--color-green-500-a20);
+  color: var(--color-green-400);
+  border-color: var(--color-green-500-a30);
+}
+
+/* Make address and form blocks shorter and centered or left aligned */
+address,
+form {
+  width: 25rem;
+  margin-right: auto;
+}
+
+.destination-search section input {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* Or use center if you want them centered */
+}
+
+/* Prevent input from stretching to full width of form */
+form input[type='search'] {
+  width: 100%;
+  /* Stays inside the form's width */
+  min-width: 0;
+}
+
+/* Confirmation Section/Panel */
+.pod-confirm-card {
+  background: var(--color-gray-900-a50);
+  border: 1px solid var(--color-cyan-500-a20);
+  border-radius: 0.75rem;
+  padding: 1.2rem 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+  width: 25rem;
+  max-width: 100%;
+  box-shadow: 0 2px 12px rgba(17, 24, 39, 0.07);
+}
+
+.pod-confirm-card .suggestion-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.pod-confirm-card .suggestion-name {
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-cyan-100);
+  font-weight: bold;
+  font-size: 1.14rem;
+  margin-bottom: 0.13rem;
+}
+
+.pod-confirm-card .suggestion-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  font-size: 0.98rem;
+  color: var(--primary-color);
+  margin-top: 0.12rem;
+}
+
+.pod-confirm-card .badge {
+  border-width: 1px;
+  border-style: solid;
+  padding: 0.22rem 0.7rem;
+  border-radius: 9999px;
+  font-size: 0.86rem;
+  font-weight: 500;
+  margin-left: 0.5rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.pod-dot {
+  background: var(--color-cyan-500);
+}
+
+.select-best-wrap {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.select-best-btn {
+  background: var(--primary-color);
+  color: var(--background-color);
+  border: none;
+  border-radius: 1rem;
+  font-size: 1.08rem;
+  font-weight: bold;
+  padding: 1rem 2.1rem;
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--primary-color);
+}
+
+.select-best-btn:hover,
+.select-best-btn:focus {
+  background: var(--background-color);
+  color: var(--primary-color);
+  box-shadow: none;
+}
+
+.confirmation-view {
+  display: flex;
+  gap: 1rem;
+}
+
+.map-container {
+  flex: 1;
+  height: 300px;
+  border-radius: 8px;
+}
+
+/* Animation for pulse effect */
+.pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.5;
+  }
+}

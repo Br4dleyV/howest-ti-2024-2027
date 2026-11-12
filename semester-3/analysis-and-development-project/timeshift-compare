@@ -1,0 +1,185 @@
+#!/usr/bin/env python3
+"""Compare two local Timeshift RSYNC snapshots without changing them."""
+
+import difflib
+import filecmp
+import json
+import os
+from pathlib import Path
+import stat
+import sys
+
+
+SNAPSHOTS = Path('/timeshift/snapshots')
+
+
+def description(snapshot):
+    try:
+        value = json.loads((snapshot / 'info.json').read_text()).get('comments', '')
+        return ' '.join(str(value).split())
+    except (OSError, ValueError):
+        return '(geen beschrijving beschikbaar)'
+
+
+def choose(prompt, count):
+    while True:
+        value = input(prompt).strip()
+        if value.lower() == 'q':
+            raise EOFError
+        if value.isdigit() and 0 <= int(value) < count:
+            return int(value)
+        print(f'Kies een nummer van 0 tot {count - 1}, of q om te stoppen.')
+
+
+def compare(old, new):
+    changes, errors = [], []
+
+    def walk(relative):
+        left, right = old / relative, new / relative
+        try:
+            with os.scandir(left) as entries:
+                before = {entry.name for entry in entries}
+            with os.scandir(right) as entries:
+                after = {entry.name for entry in entries}
+        except OSError as error:
+            errors.append(f'/{relative}: {error}')
+            return
+
+        for name in sorted(before | after):
+            path = relative / name
+            a, b = old / path, new / path
+            try:
+                if name not in before or name not in after:
+                    existing = b if name not in before else a
+                    is_directory = stat.S_ISDIR(existing.lstat().st_mode)
+                    label = 'TOEGEVOEGD' if name not in before else 'VERWIJDERD'
+                    detail = 'map met inhoud' if is_directory else ''
+                    changes.append((label, path, detail))
+                    continue
+
+                first, second = a.lstat(), b.lstat()
+                if (first.st_dev, first.st_ino) == (second.st_dev, second.st_ino):
+                    continue
+
+                kind = stat.S_IFMT(first.st_mode)
+                details = []
+                if kind != stat.S_IFMT(second.st_mode):
+                    details.append('bestandstype')
+                else:
+                    if stat.S_ISREG(first.st_mode) and not filecmp.cmp(a, b, shallow=False):
+                        details.append('inhoud')
+                    elif stat.S_ISLNK(first.st_mode) and os.readlink(a) != os.readlink(b):
+                        details.append('linkdoel')
+                    elif (stat.S_ISCHR(first.st_mode) or stat.S_ISBLK(first.st_mode)) and first.st_rdev != second.st_rdev:
+                        details.append('apparaat')
+
+                    metadata = lambda item: (stat.S_IMODE(item.st_mode), item.st_uid, item.st_gid)
+                    if metadata(first) != metadata(second):
+                        details.append('rechten/eigenaar')
+                    if stat.S_ISDIR(first.st_mode):
+                        walk(path)
+
+                if details:
+                    changes.append(('GEWIJZIGD', path, ', '.join(details)))
+            except OSError as error:
+                errors.append(f'/{path}: {error}')
+
+    walk(Path())
+    return sorted(changes, key=lambda change: str(change[1])), errors
+
+
+def show_content(old, new, path):
+    a, b = old / path, new / path
+    if not stat.S_ISREG(a.lstat().st_mode) or not stat.S_ISREG(b.lstat().st_mode):
+        print('Dit is geen gewoon tekstbestand.')
+        return
+    if max(a.stat().st_size, b.stat().st_size) > 2 * 1024 * 1024:
+        print('Bestand groter dan 2 MB; de inhoud wordt niet getoond.')
+        return
+    try:
+        before = a.read_text(encoding='utf-8')
+        after = b.read_text(encoding='utf-8')
+        if '\x00' in before or '\x00' in after:
+            raise UnicodeError
+    except UnicodeError:
+        print('Binair bestand; de inhoud wordt niet getoond.')
+        return
+    if before == after:
+        print('De inhoud is gelijk; zie het overzicht voor andere wijzigingen.')
+        return
+    print('- = eerste snapshot, + = tweede snapshot')
+    for line in difflib.unified_diff(
+        before.splitlines(), after.splitlines(),
+        fromfile=f'eerste/{path}', tofile=f'tweede/{path}', lineterm='',
+    ):
+        print(line)
+
+
+def main():
+    if os.geteuid() != 0:
+        print('Gebruik: sudo timeshift-compare', file=sys.stderr)
+        return 1
+    if not SNAPSHOTS.is_dir():
+        print(f'Geen snapshotmap gevonden: {SNAPSHOTS}', file=sys.stderr)
+        return 1
+    snapshots = sorted(
+        path for path in SNAPSHOTS.iterdir()
+        if path.is_dir() and (path / 'localhost').is_dir() and (path / 'info.json').is_file()
+    )
+    if len(snapshots) < 2:
+        print('Er zijn minstens twee lokale RSYNC-snapshots nodig.')
+        return 1
+
+    print('Beschikbare herstelpunten:\n')
+    for number, snapshot in enumerate(snapshots):
+        print(f'  [{number}] {snapshot.name}  {description(snapshot)}')
+    print('\nKies eerst de oude, daarna de nieuwe snapshot. q = stoppen.')
+    first = choose('Eerste snapshot: ', len(snapshots))
+    second = choose('Tweede snapshot: ', len(snapshots))
+    if first == second:
+        print('Je hebt dezelfde snapshot gekozen; er zijn geen verschillen.')
+        return 0
+
+    old, new = snapshots[first] / 'localhost', snapshots[second] / 'localhost'
+    print(f'\nVergelijken: {snapshots[first].name} -> {snapshots[second].name}', flush=True)
+    changes, errors = compare(old, new)
+    print()
+    for number, (label, path, detail) in enumerate(changes):
+        suffix = f' ({detail})' if detail else ''
+        print(f'[{number}] {label:<11} /{path}{suffix}')
+    if changes:
+        print('\n' + ' | '.join(
+            f'{sum(change[0] == label for change in changes)} {label.lower()}'
+            for label in ('TOEGEVOEGD', 'VERWIJDERD', 'GEWIJZIGD')
+        ))
+        print('Toegevoegde/verwijderde mappen tellen als een wijziging, inclusief hun inhoud.')
+    elif not errors:
+        print('Geen verschillen gevonden.')
+    for error in errors:
+        print(f'NIET GECONTROLEERD: {error}', file=sys.stderr)
+
+    if changes:
+        print('\nTyp een nummer voor de tekstverschillen; Enter = stoppen.')
+        while True:
+            answer = input('Bestand: ').strip()
+            if not answer or answer.lower() == 'q':
+                break
+            if not answer.isdigit() or not 0 <= int(answer) < len(changes):
+                print('Kies een nummer uit het overzicht.')
+                continue
+            label, path, _ = changes[int(answer)]
+            if label != 'GEWIJZIGD':
+                print('Dit pad bestaat slechts in een snapshot; er is geen tekstvergelijking.')
+                continue
+            show_content(old, new, path)
+    return 1 if errors else 0
+
+
+if __name__ == '__main__':
+    try:
+        sys.exit(main())
+    except (EOFError, KeyboardInterrupt):
+        print('\nGestopt.')
+    except OSError as error:
+        print(f'Fout: {error}', file=sys.stderr)
+        sys.exit(1)

@@ -1,0 +1,38 @@
+# This file is used to define all the services that make up your application.
+# In this case, we only need a database (mysql) service to run this .NET 8 application on localhost.
+
+# Create a MySQL service using the official MySQL image from Docker Hub.
+services:
+  database:
+    container_name: skynet_mysql
+    image: mysql:latest
+    env_file: docker.env
+    ports:
+      - "3306:3306"
+    volumes:
+      - skynet_mysql:/var/lib/mysql
+    networks:
+      - skynet_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  server:
+    container_name: skynet_server
+    image: hcr.technet.howest.be/adria-server-group-04:latest
+    ports:
+      - "8000:8000"
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - skynet_network
+
+volumes:
+  skynet_mysql:
+
+networks:
+  skynet_network:
+    driver: bridge
