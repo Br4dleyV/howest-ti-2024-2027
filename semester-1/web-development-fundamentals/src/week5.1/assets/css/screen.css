@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+:root {
+    --default-font: pacifico;
+    --secondary-font: roboto;
+    --h1-text-color: #b20000;
+    --primary-color: #fff;
+    --first-fieldset-primary: black;
+    --first-fieldset-bg: #d3d68c;
+    --second-fieldset-primary: #f39809;
+    --second-fieldset-bg: #542f2c;
+    --third-fieldset-primary: #fff;
+    --third-fieldset-bg: #bd0008;
+    --submit-button-color: #878c18;
+}
+
+/* --- HTML ELEMENTS --- */
+
+body {
+    background-image: url("../../images/bg-stars.gif");
+    font-family: var(--default-font), sans-serif;
+    font-size: 2rem;
+    color: var(--primary-color);
+}
+
+h1 {
+    font-size: 4rem;
+    color: var(--h1-text-color);
+    width: 60%;
+    margin: 3rem auto;
+    text-align: center;
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: 10rem;
+    background-image: url("../../images/xmas-tree.gif");
+    line-height: 220%;
+}
+
+/* --- FORM ELEMENTS --- */
+
+form {
+    width: 65%;
+    margin: 0 auto;
+}
+
+fieldset {
+    border-radius: 0.5rem;
+    padding: 2rem;
+    margin-bottom: 1rem;
+}
+
+legend {
+    font-size: 3rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+fieldset:nth-child(1) {
+    background-color: var(--first-fieldset-bg);
+
+    input, textarea, select {
+        border: 0.2rem solid var(--submit-button-color);
+    }
+
+    legend {
+        background-color: var(--first-fieldset-bg);
+        color: var(--first-fieldset-primary);
+    }
+
+    label {
+        color: var(--first-fieldset-primary);
+    }
+}
+
+fieldset:nth-child(2) {
+    background-color: var(--second-fieldset-bg);
+
+    input, textarea, select {
+        border: 0.2rem solid var(--second-fieldset-primary);
+    }
+
+    legend {
+        background-color: var(--second-fieldset-bg);
+        color: var(--second-fieldset-primary);
+    }
+
+    label {
+        color: var(--primary-color);
+    }
+}
+
+fieldset:nth-child(3) {
+    background-color: var(--third-fieldset-bg);
+
+    legend {
+        background-color: var(--third-fieldset-bg);
+        color: var(--third-fieldset-primary);
+    }
+
+    label {
+        color: var(--primary-color);
+    }
+}
+
+label, input, select, textarea {
+    display: block;
+    box-sizing: border-box;
+    border-radius: 1rem;
+    padding: 0.8rem;
+    font-family: var(--secondary-font), sans-serif;
+    width: 100%;
+}
+
+input, textarea, select {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    letter-spacing: 0.0625rem;
+}
+
+input[type="radio"], input[type="radio"] + label, input[type="checkbox"], input[type="checkbox"] + label {
+    display: inline-block;
+    width: auto;
+    font-size: 1.7rem;
+}
+
+input[type="checkbox"],input[type="radio"] {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+input:focus, textarea:focus, select:focus {
+    border: 0.2rem dotted var(--submit-button-color);
+}
+
+button {
+    display: block;
+    font-size: 1.3rem;
+    font-weight: lighter;
+    text-transform: lowercase;
+    margin: 1rem 0 1rem auto;
+    color: var(--primary-color);
+    background-color: var(--submit-button-color);
+    padding: 0.5em;
+    border: none;
+    border-radius: 0.2rem;
+}

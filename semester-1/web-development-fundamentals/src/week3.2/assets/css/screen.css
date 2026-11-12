@@ -1,0 +1,132 @@
+/* Main sections */
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    color: #141823;
+    background-color: #e9eaed;
+}
+
+header:has(h1) {
+    width: 100%;
+    background-color: #3b5897;
+    height: 2.5rem;
+    font-weight: bold;
+    align-content: center;
+    margin-bottom: 0.625rem;
+}
+
+header h1 {
+    color: white;
+    margin-left: 2.5rem;
+}
+
+main {
+    width: 27.5rem;
+    margin: 0 auto;
+}
+
+/* Article styles */
+
+article {
+    margin-bottom: 1rem;
+
+    header {
+        background-color: white;
+
+        p {
+            margin-bottom: 0.937rem;
+            font-size: 1.2rem;
+        }
+
+        h2 {
+            margin-bottom: 0.312rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+    }
+
+    ul {
+        margin-bottom: 0.625rem;
+
+        li {
+            display: inline-block;
+        }
+    }
+
+    footer {
+        background-color: #f6f7f8;
+        line-height: 140%;
+
+        div {
+            a {
+                font-weight: bold;
+            }
+
+            li a {
+                font-weight: normal;
+            }
+        }
+
+        > a {
+            display: block;
+            margin: 0.5rem auto;
+        }
+
+        > p {
+            padding-bottom: 0.5rem;
+            border-bottom: 0.1rem solid #e1e2e3;
+        }
+    }
+
+    header, footer {
+        padding: 1rem 1.5rem 0;
+        border: 0.05rem solid #e1e2e3;
+    }
+
+    img {
+        margin-bottom: 0.312rem;
+    }
+
+    time {
+        display: block;
+        margin-bottom: 0.937rem;
+        color: #9197a3;
+        font-size: 0.8rem;
+    }
+}
+
+a {
+    color: #3b5998;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.dot-spacing {
+    li {
+        background-repeat: no-repeat;
+        background-size: 0.3rem;
+        background-image: url("../../images/dot.png");
+        padding-left: 1.2rem;
+
+        &:first-child {
+            background: none;
+        }
+    }
+}
+
+.number-of-likes {
+    background-repeat: no-repeat;
+    background-size: 1rem;
+    background-image: url("../../images/like.svg");
+    padding-left: 1.2rem;
+}
+
+.view-more-comments {
+    background-repeat: no-repeat;
+    background-size: 1rem;
+    background-image: url("../../images/comment.svg");
+    padding-left: 1.2rem;
+}

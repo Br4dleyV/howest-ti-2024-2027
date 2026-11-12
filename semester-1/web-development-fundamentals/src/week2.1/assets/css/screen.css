@@ -1,0 +1,86 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #000;
+    font-size: 1rem;
+    background-color: #fff;
+}
+
+h1 {
+    width: 100%;
+    margin-bottom: 2.5rem;
+    height: 7.5rem;
+    align-content: center;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: #d11b1c;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 2.5rem;
+    margin: 2.5rem 0;
+    text-align: center;
+    font-weight: bolder;
+}
+
+h3 {
+    text-align: right;
+    color: #d11b1c;
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+}
+
+h4 {
+    font-size: 1.9rem;
+    margin-bottom: 1rem;
+}
+
+p {
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+    line-height: 160%;
+    text-align: justify;
+    color: #999;
+}
+
+/* The first p tag (intro) of an article needs this layout */
+article p:nth-of-type(1) {
+    padding-left: 0.5rem;
+    border-left: 0.25rem solid #999;
+    color: black;
+    font-weight: bold;
+}
+
+/* Every even article needs a background */
+article:nth-child(even) {
+    background-color: #f3f3f3;
+}
+
+/* Every uneven article image needs a line above it */
+article:nth-child(odd) img {
+        border-top: 0.625rem solid #d11b1c;
+}
+
+section {
+    width: 60%;
+    margin: 0 auto;
+}
+
+article {
+    margin-bottom: 2.5rem;
+    padding: 1.25rem
+}
+
+img {
+    max-width: 100%;
+}
+
+a {
+    color: #d11b1c;
+}
+
+a:hover {
+    text-decoration: none;
+}

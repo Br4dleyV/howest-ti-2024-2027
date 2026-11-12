@@ -1,0 +1,125 @@
+:root {
+    --hacker-bg-color: oklch(0.18% 0.12 264.05deg);
+    --hacker-highlight-colour: oklch(70% 0.50 340deg);
+    --hacker-alternative-highlight-colour: oklch(90% 0.5 200deg);
+    --hacker-text-colour: white;
+    --hacker-gradient: linear-gradient(
+        234deg in oklab,
+        var(--hacker-alternative-highlight-colour) 2% 0%, var(--hacker-bg-color) 72% 72%);
+
+    /* User colours */
+    --bg-color: lch(98% 0.02 356.63deg);
+    --highlight-colour: lch(88% 18.98 215.8deg);
+    --alternative-highlight-colour: lch(93% 27.42 111.52deg);
+    --secondary-alternative-highlight-colour:lch(82% 24.38 26.43deg);
+    --text-colour: lch(31.1% 11.3 330deg);
+
+    /* Hacker colours */
+    --font-hacker: 'Sono', courier;
+    --font-primary: poppins, arial, helvetica;
+    --default-spacing: 2rem;
+
+    /* background images */
+    --bg-image-settings:  top 2% center / 20% no-repeat;
+    --bg-default-image: url("../media/user-vneck-hair-sharp-solid.svg");
+    --bg-hacker-image: url("../media/user-secret-sharp-solid.svg");
+}
+
+body {
+    font-family: var(--font-primary), sans-serif;
+    font-size: 2rem;
+    background-color: var(--bg-color);
+}
+
+h1, h2 {
+    font-weight: 700;
+    text-align: center;
+    padding: var(--default-spacing);
+
+    span {
+        background-color: var(--highlight-colour);
+        box-shadow: var(--alternative-highlight-colour) -0.7rem 0.7rem 0.1rem;
+    }
+}
+
+p {
+    margin-bottom: var(--default-spacing);
+    line-height: 120%;
+}
+
+address {
+    strong {
+        color: var(--secondary-alternative-highlight-colour);
+    }
+}
+
+input, button {
+    background-color: var(--secondary-alternative-highlight-colour);
+    border: none;
+    border-radius: 0;
+    outline: none;
+    height: 4rem;
+    font-size: 2rem;
+    width: 50%;
+    box-sizing: border-box;
+    vertical-align: middle;
+}
+
+input {
+    padding: 1rem;
+    font-size: 3rem;
+}
+
+button {
+    width: max-content;
+    background: linear-gradient(45deg, var(--alternative-highlight-colour), var(--highlight-colour));
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+main {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+section {
+    flex: 1 0 50%;
+    height: 100dvh;
+    padding: 12% var(--default-spacing) var(--default-spacing);
+    box-sizing: border-box; /* avoid overspill with dvh and padding */
+    background: var(--bg-default-image) var(--bg-image-settings);
+
+}
+
+#user-dashboard dt {
+    background-color: var(--alternative-highlight-colour);
+    display: inline-block;
+    margin-bottom: calc(var(--default-spacing)/4);
+}
+
+#user-dashboard dd {
+    margin-bottom: var(--default-spacing);
+}
+
+#hacker-dashboard {
+    --bg-color: var(--hacker-bg-color);
+    --highlight-colour:  var(--hacker-highlight-colour);
+    --alternative-highlight-colour:  var(--hacker-alternative-highlight-colour);
+    --text-colour:  var(--hacker-text-colour);
+
+    font-family: var(--font-hacker), monospace;
+    background: var(--bg-hacker-image) var(--bg-image-settings), var(--hacker-gradient);
+    color: var(--text-colour);
+    box-shadow: rgb(3 3 3 / 20%) -0.5rem 0.5rem 0.7rem;
+
+    dl {
+       display: grid;
+       grid-template-columns: auto 1fr;
+        gap: var(--default-spacing);
+
+        dd span {
+                color: var(--highlight-colour)
+        }
+    }
+}

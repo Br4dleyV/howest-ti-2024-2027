@@ -1,0 +1,286 @@
+@font-face {
+    font-family: chomskyregular;
+    src: url('../fonts/chomsky-webfont.woff2') format('woff2'),
+    url('../fonts/chomsky-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+:root {
+    --red: #dd2727;
+    --dark-grey: #444;
+    --white: #d8d8d8;
+    --grey: #666;
+    --light-grey: #aaa;
+    --light-black: rgba(100 100 100 / 20%);
+    --cyan: rgb(68 196 209);
+}
+
+/* --------------------- */
+
+/*   GENERAL ELEMENTS  */
+
+/* --------------------- */
+
+body {
+    font-size: 1rem;
+    color: var(--dark-grey);
+    font-family: Georgia, Cambria, 'Times New Roman', Times, sans-serif;
+    background-color: white;
+    width: 45%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 0.75rem;
+}
+
+h1 {
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    text-shadow: rgba(100 100 100 / 20%) 0.1rem 0.1rem 0;
+}
+
+a {
+    color: var(--dark-grey);
+    text-decoration: none;
+}
+
+a:hover {
+    color: rgb(68 196 209);
+}
+
+hr {
+    border-top: 0.1rem solid var(--white);
+    margin-bottom: 0.5rem;
+}
+
+img {
+    max-width: 100%;
+}
+
+/* --------------------- */
+
+/*   GENERAL CLASSES   */
+
+/* --------------------- */
+
+/* --------------------- */
+
+/* CONTAINING ELEMENTS */
+
+/* --------------------- */
+
+header {
+    margin-bottom: 1rem;
+}
+
+header h2 {
+    font-family: chomskyregular, Georgia, serif;
+    font-size: 4rem;
+    text-align: center;
+    margin-bottom: 0.75rem;
+}
+
+header h2 span {
+    color: var(--cyan);
+}
+
+nav {
+    font-family: Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    border-bottom: 0.05rem solid var(--white);
+    padding-bottom: 0.8rem;
+}
+
+nav li {
+    display: inline;
+}
+
+nav a {
+    display: inline-block;
+    padding: 0.2rem;
+    margin-right: 1rem;
+}
+
+nav a:hover, nav .active {
+    background-color: rgb(68 196 209);
+    color: white;
+}
+
+section {
+    background-color: #ededed;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+section img {
+    margin-bottom: 0.5rem;
+}
+
+section h2 {
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+section h3 {
+    font-size: 1.1rem;
+    line-height: 160%;
+    background-image: url('../media/nyt.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    padding-left: 2.5rem;
+}
+
+section a:hover {
+    color: var(--cyan);
+}
+
+section li {
+    font-size: 1rem;
+    list-style-type: none;
+    background-image: url('../media/nyt-inverted.png');
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    padding-left: 1.5rem;
+    margin-bottom: 0.6rem;
+    line-height: 120%;
+}
+
+footer {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-top: 0.0625rem solid var(--white);
+}
+
+footer h2 {
+    color: var(--dark-grey);
+    text-transform: uppercase;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+footer figure {
+    color: var(--grey);
+    font-size: 0.8rem;
+    display: inline-block;
+    width: 22%;
+    vertical-align: top;
+    margin-right: 2%;
+}
+
+footer img {
+    margin-bottom: 0.1rem;
+}
+
+/* ------------------------ */
+
+/* PAGE SPECIFIC ELEMENTS */
+
+/* ------------------------ */
+
+/* --- Homepage --- */
+
+article {
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+article:not(main article:last-child) {
+    border-bottom: 0.0625rem solid var(--white);
+}
+
+article img, .detail main img {
+    margin-bottom: 0.75rem;
+}
+
+article h2, .detail main h1 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    line-height: 130%;
+    text-shadow: none;
+}
+
+article h3 {
+    color: var(--grey);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+}
+
+article p{
+    font-size: 0.8rem;
+    line-height: 160%;
+    margin-bottom: 0.25rem;
+}
+
+article p strong,  article h4 {
+    font-weight: bold;
+    color: var(--cyan);
+    display: inline-block;
+    margin-right: 0.25rem;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+article h4 {
+    font-size: 0.8rem;
+}
+
+.detail main p a {
+    display: inline;
+    text-decoration: underline;
+}
+
+article p + a, .detail main p a {
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(68 196 209);
+    font-weight: bold;
+    font-size: 0.8rem;
+    white-space: nowrap; /* Zorgt ervoor dat de link niet kan gesplitst worden */
+    display: block;
+    text-transform: lowercase;
+}
+
+article p + a:hover, .detail main p a:hover {
+    text-decoration: underline;
+}
+
+/* --- Detailpage --- */
+
+.detail article {
+    width: auto;
+}
+
+.detail article h2 {
+    font-size: 1.5rem;
+}
+
+.detail figcaption {
+    color: var(--light-grey);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.0625rem;
+}
+
+.detail img {
+    margin-bottom: 0.25rem;
+}
+
+.detail main p {
+    margin-bottom: 1.25rem;
+}
+
+.detail main p a:hover {
+    text-decoration: none;
+}
+
+.detail figure {
+    margin-bottom: 0.75rem
+}
+
+.detail figure + p {
+    font-weight: bold;
+}

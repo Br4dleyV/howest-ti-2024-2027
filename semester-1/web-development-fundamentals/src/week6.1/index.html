@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hacker Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sono:wght@200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/screen.css">
+
+    <script src="assets/js/script.js"></script>
+</head>
+
+<body>
+<main>
+    <section id="user-dashboard">
+        <h1><span>User dashboard</span></h1>
+        <dl>
+            <dt>Name:</dt>
+            <dd class="name">山田太郎 Tarou Yamada</dd>
+            <dt>Age:</dt>
+            <dd class="age">45</dd>
+            <dt>Address:</dt>
+            <dd class="address">
+                <address>
+                    Strada Mihai Eminescu 25, Sector 1
+                    <br>București 010123, <strong>România</strong>
+                </address>
+            </dd>
+            <dt>Password</dt>
+            <dd>
+                <form method="POST" action="password-update.php">
+                    <label for="password">Current pw </label> <input type="password" value="" id="password" name="password">
+                    <button>Update</button>
+                </form>
+            </dd>
+        </dl>
+    </section>
+    <section id="hacker-dashboard">
+        <h2>Secret Hacker dashboard</h2>
+        <p>The data below has been secretly obtained from the user panel.</p>
+        <dl>
+            <dt>Name:</dt>
+            <dd class="name"></dd>
+            <dt>Age:</dt>
+            <dd class="age"></dd>
+            <dt>Address:</dt>
+            <dd class="address">
+                <address>
+
+                </address>
+            </dd>
+            <dt>Password</dt>
+            <dd>
+               The user is typing in the following password: <span id="password-hacker"></span>
+            </dd>
+        </dl>
+    </section>
+
+</main>
+</body>
+</html>

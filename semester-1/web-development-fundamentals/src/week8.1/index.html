@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Frequency Generator</title>
+    <meta name="author" content="Bradley Velle">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sono:wght@200;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/screen.css">
+    <script src="assets/js/script.js"></script>
+</head>
+<body>
+
+<main>
+    <h1>Frequency generator</h1>
+    <form action="#" method="GET">
+        <fieldset>
+            <label for="word" class="sr-only">Type your word here</label><input type="text" name="word" id="word" placeholder="Type your word here" autofocus autocomplete="off">
+            <button>Show frequency</button>
+        </fieldset>
+    </form>
+    <section class="hidden">
+        <h2>Frequency table</h2>
+        <ul id="letters"></ul>
+        <ul id="amount">
+        </ul>
+        <button type="button">sort ascending</button>
+    </section>
+</main>
+</body>
+</html>
