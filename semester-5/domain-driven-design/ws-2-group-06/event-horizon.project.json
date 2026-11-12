@@ -1,0 +1,204 @@
+{
+  "id": "event-horizon",
+  "name": "Event Horizon",
+  "contexts": [
+    {
+      "id": "ctx.booking",
+      "name": "Event Booking & Lifecycle",
+      "evolutionStage": "product/rental",
+      "positions": {
+        "strategic": {
+          "x": 50
+        },
+        "flow": {
+          "x": 36.667343192638285
+        },
+        "distillation": {
+          "x": 85,
+          "y": 85
+        },
+        "shared": {
+          "y": 54.0349062117801
+        }
+      },
+      "purpose": "Supports the platform’s core business by managing events and reservations.",
+      "strategicClassification": "core",
+      "ownership": "ours"
+    },
+    {
+      "id": "ctx.profiles",
+      "name": "Users Profile Management",
+      "evolutionStage": "genesis",
+      "positions": {
+        "strategic": {
+          "x": 15
+        },
+        "flow": {
+          "x": 47.67652244065204
+        },
+        "distillation": {
+          "x": 20,
+          "y": 40
+        },
+        "shared": {
+          "y": 75.37265308183599
+        }
+      },
+      "purpose": "Maintains user profiles, roles, and participation history.",
+      "strategicClassification": "generic",
+      "ownership": "internal",
+      "isLegacy": true,
+      "isBigBallOfMud": true
+    },
+    {
+      "id": "ctx.venue",
+      "name": "Venue Management",
+      "evolutionStage": "custom-built",
+      "positions": {
+        "strategic": {
+          "x": 25
+        },
+        "flow": {
+          "x": 48.84753831516828
+        },
+        "distillation": {
+          "x": 45,
+          "y": 60
+        },
+        "shared": {
+          "y": 28.460201058612427
+        }
+      },
+      "purpose": "Manages venue availability, capacity, and booking constraints",
+      "strategicClassification": "supporting",
+      "ownership": "ours"
+    },
+    {
+      "id": "ctx.location",
+      "name": "External Location Services",
+      "evolutionStage": "commodity/utility",
+      "positions": {
+        "strategic": {
+          "x": 88
+        },
+        "flow": {
+          "x": 20.57604592918253
+        },
+        "distillation": {
+          "x": 15,
+          "y": 19
+        },
+        "shared": {
+          "y": 36.73744353772258
+        }
+      },
+      "purpose": "Supplies validated address and coordinate data",
+      "strategicClassification": "generic",
+      "ownership": "external"
+    },
+    {
+      "id": "ctx.calendar",
+      "name": "Calendar Synchronization",
+      "evolutionStage": "commodity/utility",
+      "positions": {
+        "strategic": {
+          "x": 85
+        },
+        "flow": {
+          "x": 16.914197530864154
+        },
+        "distillation": {
+          "x": 15,
+          "y": 25
+        },
+        "shared": {
+          "y": 52.20714615695965
+        }
+      },
+      "purpose": "Shares event schedules with external calendar apps",
+      "strategicClassification": "generic",
+      "ownership": "internal"
+    },
+    {
+      "id": "ctx.analysis",
+      "name": "Analysis & Insights",
+      "evolutionStage": "commodity/utility",
+      "positions": {
+        "strategic": {
+          "x": 85
+        },
+        "flow": {
+          "x": 58.00244737827745
+        },
+        "distillation": {
+          "x": 45,
+          "y": 45
+        },
+        "shared": {
+          "y": 53.260478678432634
+        }
+      },
+      "purpose": "Produces reports and insights from platform data",
+      "strategicClassification": "supporting",
+      "ownership": "internal"
+    }
+  ],
+  "relationships": [
+    {
+      "id": "rel.booking-profiles",
+      "fromContextId": "ctx.booking",
+      "toContextId": "ctx.profiles",
+      "downstreamRole": "anti-corruption-layer"
+    },
+    {
+      "id": "rel.booking-venue",
+      "fromContextId": "ctx.booking",
+      "toContextId": "ctx.venue",
+      "pattern": "customer-supplier"
+    },
+    {
+      "id": "rel.venue-location",
+      "fromContextId": "ctx.venue",
+      "toContextId": "ctx.location",
+      "upstreamRole": "open-host-service",
+      "downstreamRole": "anti-corruption-layer"
+    },
+    {
+      "id": "rel.booking-calendar",
+      "fromContextId": "ctx.booking",
+      "toContextId": "ctx.calendar",
+      "upstreamRole": "published-language",
+      "downstreamRole": "conformist"
+    },
+    {
+      "id": "rel.analysis-venue",
+      "fromContextId": "ctx.analysis",
+      "toContextId": "ctx.venue",
+      "downstreamRole": "conformist"
+    },
+    {
+      "id": "rel.analysis-booking",
+      "fromContextId": "ctx.analysis",
+      "toContextId": "ctx.booking",
+      "pattern": "customer-supplier"
+    },
+    {
+      "id": "rel.analysis-profiles",
+      "fromContextId": "ctx.analysis",
+      "toContextId": "ctx.profiles",
+      "downstreamRole": "anti-corruption-layer"
+    }
+  ],
+  "repos": [],
+  "people": [],
+  "teams": [],
+  "groups": [],
+  "users": [],
+  "userNeeds": [],
+  "userNeedConnections": [],
+  "needContextConnections": [],
+  "viewConfig": {
+    "flowStages": []
+  },
+  "version": 3
+}
