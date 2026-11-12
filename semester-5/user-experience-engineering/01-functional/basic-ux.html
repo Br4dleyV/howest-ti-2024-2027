@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>01-functional</title>
+</head>
+
+<body>
+
+  <h1>The UX of HTML: Basics</h1>
+
+  <h2>Headings</h2>
+
+  <h3>Why a Proper Heading Structure Matters</h3>
+  <ul>
+    <li>Screenreaders use headings as a table of contents so they can jump directly to sections</li>
+    <li>Skipping levels confuses blind users</li>
+    <li>It improves SEO (Search Engine Optimization)</li>
+    <li>It makes the document cleaner and easier to style with CSS</li>
+    <li>It's easier to maintain and update</li>
+  </ul>
+
+  <h3>How you can have a page's heading structure display or read aloud by a tool</h3>
+  <p>You can use an extension like HeadingsMap that visualizes the heading of a page, or use another browser like
+    Polypane.</p>
+
+  <h2>Images</h2>
+
+  <h3>What UX do I think is better?</h3>
+  <p>I think the best UX is when the a tag does not have an alt attribute and only the image has an alt attribute.</p>
+
+  <h3>The different ways in which you can use images and what sort of alt attributes go with each</h3>
+  <ul>
+    <li>Decorative images: alt=""</li>
+    <li>Informative images: alt="Description of the image" (without "image of")</li>
+    <li>Functional images (like buttons): alt="Function of the button"</li>
+  </ul>
+
+  <h3> What I learned about alt tags</h3>
+  <p>
+    They are very important to people that can't see or are hard of seeing. They are also important for SEO. You shouldn't use the same alt tag for multiple images, and you should put an empty alt tag for decorative images.
+  </p>
+
+  <h2>Landmarks & Regions</h2>
+
+  <h3>What are landmarks and what is their relation to semantic elements</h3>
+  <p>A landmark is a section of a web page that allows screen readers etc. to create dynamically generated summaries of a page's layout. It allows fast navigation. They map directly to specific ARIA landmarks.</p>
+
+  <h2>Links</h2>
+
+  <a href="https://www.marvel.com/characters/spider-man-peter-parker">Spider-Man</a>
+  <span onclick="window.open('https://www.marvel.com/characters/spider-man-peter-parker')">https://www.marvel.com/characters/spider-man-peter-parker</span>
+
+  <h3>The functions different browsers offer when clicking on these links</h3>
+  <p>When you click on the first link, it will open in the same tab. When you click on the second link, it will open in a new tab. The second one doesn't look like a link. The second one does not give the open in new tab option either.</p>
+
+    <a href="https://www.marvel.com/characters/spider-man-peter-parker" download>Spider-Man</a>
+  <span download onclick="window.open('https://www.marvel.com/characters/spider-man-peter-parker')">https://www.marvel.com/characters/spider-man-peter-parker</span>
+
+  <p>The span tag opens the link to another page first and then downloads the file. The a tag allows the user to download the file directly.</p>
+
+  <h3>The accessibility tree</h3>
+  <p>The accessibility tree shows the a tag as a link and the span tag as a generic</p>
+
+  <h2>Buttons</h2>
+
+  <button>Press me for action</button>
+  <div style="border: 1px solid black; background-color: lightgray;">Press me for action</div>
+
+  <h3>The functions different browsers offer when clicking on these buttons</h3>
+  <p>Absolutely nothing for both. The first one has hover color changing though.</p>
+
+  <h3>Buttons in the accessibility tree</h3>
+  <p>The button shows that it can be focused on, but the div does not. It just shows StaticText</p>
+
+  <hr>
+
+  <h2>Accordion Methods</h2>
+
+  <!-- Method 1: Native HTML (<details> and <summary>) -->
+  <h3>Method 1: Native HTML (&lt;details&gt; &amp; &lt;summary&gt;)</h3>
+  <details>
+    <summary>Accordion Header 1</summary>
+    <p>test 1</p>
+  </details>
+  <details>
+    <summary>Accordion Header 2</summary>
+    <p>test 2</p>
+  </details>
+  <details>
+    <summary>Accordion Header 3</summary>
+    <p>test 3</p>
+  </details>
+
+  <!-- Method 2: Vanilla JavaScript (Display Toggle) -->
+  <h3>Method 2: Vanilla JS (Display Toggle)</h3>
+  <div>
+    <button class="accordion-toggle-display">Accordion Header 1</button>
+    <div class="accordion-content-display" style="display: none;">
+      <p>test 1</p>
+    </div>
+  </div>
+  <div>
+    <button class="accordion-toggle-display">Accordion Header 2</button>
+    <div class="accordion-content-display" style="display: none;">
+      <p>test 2</p>
+    </div>
+  </div>
+  <div>
+    <button class="accordion-toggle-display">Accordion Header 3</button>
+    <div class="accordion-content-display" style="display: none;">
+      <p>test 3</p>
+    </div>
+  </div>
+
+  <!-- Method 3: JavaScript with Max-Height CSS Transition -->
+  <h3>Method 3: JS with Height Transition</h3>
+  <style>
+    .accordion-content-height {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+  </style>
+  <div>
+    <button class="accordion-toggle-height">Accordion Header 1</button>
+    <div class="accordion-content-height">
+      <p>test 1</p>
+    </div>
+  </div>
+  <div>
+    <button class="accordion-toggle-height">Accordion Header 2</button>
+    <div class="accordion-content-height">
+      <p>test 2</p>
+    </div>
+  </div>
+  <div>
+    <button class="accordion-toggle-height">Accordion Header 3</button>
+    <div class="accordion-content-height">
+      <p>test 3</p>
+    </div>
+  </div>
+
+  <!-- Method 4: Exclusive Native Accordion using the name attribute -->
+  <h3>Method 4: Exclusive Native HTML Accordion (Only 1 Open at a Time)</h3>
+  <details name="my-exclusive-accordion">
+    <summary>Accordion Header 1</summary>
+    <p>test 1</p>
+  </details>
+  <details name="my-exclusive-accordion">
+    <summary>Accordion Header 2</summary>
+    <p>test 2</p>
+  </details>
+  <details name="my-exclusive-accordion">
+    <summary>Accordion Header 3</summary>
+    <p>test 3</p>
+  </details>
+
+  <script>
+    // Method 2 Logic: Toggles inline style display
+    document.querySelectorAll('.accordion-toggle-display').forEach(button => {
+      button.addEventListener('click', () => {
+        const content = button.nextElementSibling;
+        content.style.display = content.style.display === 'none' ? 'block' : 'none';
+      });
+    });
+
+    // Method 3 Logic: Toggles max-height dynamically
+    document.querySelectorAll('.accordion-toggle-height').forEach(button => {
+      button.addEventListener('click', () => {
+        const content = button.nextElementSibling;
+        if (content.style.maxHeight) {
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + 'px';
+        }
+      });
+    });
+  </script>
+
+  <p>The accordions all work with keyboard. The native HTML version is the most accessible since you can CTRL F to search for them. When searching for something that is hidden in method 4, the others will close and the one with the result in it will open.</p>
+
+</body>
+
+</html>

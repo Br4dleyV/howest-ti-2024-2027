@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Complex components</title>
+  <style>
+    [hidden] { display: none !important; }
+    body { max-width: 750px; margin: auto; padding: 1rem; font: 1rem/1.6 sans-serif; background: Canvas; color: CanvasText; }
+    .demo { padding-block: 1rem; border-bottom: 1px solid #888; }
+    button, .tabs a { padding: .5rem; min-height: 44px; font: inherit; }
+    :focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
+    .tabs, .controls { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+    [aria-selected="true"] { font-weight: bold; text-decoration-thickness: 3px; }
+    label { display: inline-flex; align-items: center; min-height: 44px; }
+    dialog[open]:not(:modal) { position: static; margin: 1rem 0; }
+    dialog { box-sizing: border-box; max-width: min(450px, calc(100% - 2rem)); max-height: 90vh; overflow: auto; }
+    dialog::backdrop { background: rgb(0 0 0 / .6); }
+    :root:has(#dark-mode:checked) { color-scheme: dark; }
+  </style>
+</head>
+<body>
+  <main id="main">
+    <h1>Complex components</h1>
+    <p>Four simple examples using progressive enhancement.</p>
+
+    <section class="demo" aria-labelledby="dialog-heading">
+      <h2 id="dialog-heading">1. Dialog</h2>
+      <a class="button" id="open-visit" href="#visit-dialog">Open study tip</a>
+      <!-- Visible inline without JavaScript. -->
+      <dialog open id="visit-dialog" aria-labelledby="guide-title">
+        <h3 id="guide-title" tabindex="-1">Study tip</h3>
+        <p>Take a short break after each study session.</p>
+        <button id="close-visit" type="button" hidden>Close</button>
+      </dialog>
+    </section>
+
+    <section class="demo" aria-labelledby="tabs-heading">
+      <h2 id="tabs-heading">2. Tabs</h2>
+      <nav class="tabs" id="workshop-tabs" aria-label="Study information">
+        <a id="tab-overview" href="#overview">Overview</a>
+        <a id="tab-schedule" href="#schedule">Schedule</a>
+        <a id="tab-access" href="#access">Accessibility</a>
+      </nav>
+      <section class="panel" id="overview" aria-labelledby="overview-heading">
+        <h3 id="overview-heading">Overview</h3>
+        <p>Practise HTML, CSS, and JavaScript by building small components.</p>
+      </section>
+      <section class="panel" id="schedule" aria-labelledby="schedule-heading">
+        <h3 id="schedule-heading">Schedule</h3>
+        <p>Read the instructions, build an example, and test it.</p>
+      </section>
+      <section class="panel" id="access" aria-labelledby="access-heading">
+        <h3 id="access-heading">Accessibility</h3>
+        <p>Use clear labels, visible focus, and keyboard controls.</p>
+      </section>
+      <p id="tab-help" hidden>Use Left/Right arrows, Home, or End to change tabs.</p>
+    </section>
+
+    <section class="demo" aria-labelledby="switch-heading">
+      <h2 id="switch-heading">3. Switch</h2>
+      <label for="dark-mode">
+        <input id="dark-mode" type="checkbox" role="switch">
+        Dark mode
+      </label>
+      <p>Press Space to toggle. The theme uses CSS, so JavaScript is not needed.</p>
+    </section>
+
+    <section class="demo" id="projects" aria-labelledby="projects-title">
+      <h2 id="projects-title">4. Carousel</h2>
+      <div id="slides">
+        <div class="slide">
+          <h3>HTML</h3>
+          <p>Start with meaningful headings, links, and buttons.</p>
+        </div>
+        <div class="slide">
+          <h3>CSS</h3>
+          <p>Add a readable layout and clear focus indicators.</p>
+        </div>
+        <div class="slide">
+          <h3>JavaScript</h3>
+          <p>Add interactions while keeping the content available without scripts.</p>
+        </div>
+      </div>
+      <div class="controls" id="carousel-controls" hidden>
+        <button id="previous" type="button" aria-controls="slides">Previous</button>
+        <p id="slide-status" role="status" aria-atomic="true"></p>
+        <button id="next" type="button" aria-controls="slides">Next</button>
+      </div>
+      <p>No automatic sliding. Use Tab and Enter/Space to operate the buttons.</p>
+    </section>
+    <noscript><p>JavaScript is off: all tab sections, slides, and the study tip remain visible.</p></noscript>
+  </main>
+
+  <script>
+    // Dialog: native modal behaviour handles focus containment and Escape.
+    const dialog = document.querySelector('#visit-dialog');
+    const openButton = document.querySelector('#open-visit');
+    const closeButton = document.querySelector('#close-visit');
+
+    if (typeof dialog.showModal === 'function') {
+      dialog.removeAttribute('open');
+      closeButton.hidden = false;
+      openButton.addEventListener('click', event => {
+        event.preventDefault();
+        dialog.showModal();
+        document.querySelector('#guide-title').focus();
+      });
+      closeButton.addEventListener('click', () => dialog.close());
+      dialog.addEventListener('close', () => openButton.focus());
+    }
+
+    // Tabs: ordinary links become tabs only when JavaScript is available.
+    const tabList = document.querySelector('#workshop-tabs');
+    const tabs = [...tabList.querySelectorAll('a')];
+    const panels = tabs.map(tab => document.querySelector(tab.hash));
+
+    function selectTab(index) {
+      tabs.forEach((tab, i) => {
+        tab.setAttribute('aria-selected', String(i === index));
+        tab.tabIndex = i === index ? 0 : -1;
+        panels[i].hidden = i !== index;
+      });
+    }
+
+    tabList.setAttribute('role', 'tablist');
+    tabs.forEach((tab, index) => {
+      tab.setAttribute('role', 'tab');
+      tab.setAttribute('aria-controls', panels[index].id);
+      panels[index].setAttribute('role', 'tabpanel');
+      panels[index].setAttribute('aria-labelledby', tab.id);
+      panels[index].tabIndex = 0;
+
+      tab.addEventListener('click', event => {
+        event.preventDefault();
+        selectTab(index);
+      });
+      tab.addEventListener('keydown', event => {
+        let next;
+        if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+        if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+        if (event.key === 'Home') next = 0;
+        if (event.key === 'End') next = tabs.length - 1;
+        if (event.key === ' ') next = index;
+        if (next !== undefined) {
+          event.preventDefault();
+          selectTab(next);
+          tabs[next].focus();
+        }
+      });
+    });
+    const initialTab = tabs.findIndex(tab => tab.hash === location.hash);
+    selectTab(initialTab < 0 ? 0 : initialTab);
+    document.querySelector('#tab-help').hidden = false;
+
+    // Carousel: show one slide at a time, with manual next/previous controls.
+    const slides = [...document.querySelectorAll('.slide')];
+    const status = document.querySelector('#slide-status');
+    let currentSlide = 0;
+
+    document.querySelector('#projects').setAttribute('aria-roledescription', 'carousel');
+    slides.forEach((slide, index) => {
+      slide.setAttribute('role', 'group');
+      slide.setAttribute('aria-roledescription', 'slide');
+      slide.setAttribute('aria-label', (index + 1) + ' of ' + slides.length);
+    });
+
+    function showSlide(index) {
+      currentSlide = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => { slide.hidden = i !== currentSlide; });
+      status.textContent = 'Slide ' + (currentSlide + 1) + ' of ' + slides.length;
+    }
+
+    document.querySelector('#previous').addEventListener('click', () => showSlide(currentSlide - 1));
+    document.querySelector('#next').addEventListener('click', () => showSlide(currentSlide + 1));
+    document.querySelector('#carousel-controls').hidden = false;
+    showSlide(0);
+  </script>
+</body>
+</html>

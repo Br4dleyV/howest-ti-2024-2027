@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nested navigation</title>
+</head>
+<body>
+    <a href="#main-content">Skip to main content</a>
+
+    <nav aria-label="Main navigation">
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li>
+                <a href="#products">Products</a>
+                <ul>
+                    <li><a href="#laptops">Laptops</a></li>
+                    <li><a href="#phones">Phones</a></li>
+                    <li><a href="#accessories">Accessories</a></li>
+                </ul>
+            </li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <main id="main-content" tabindex="-1">
+        <h1>Nested navigation</h1>
+        <p>The product links stay visible, so you can reach them with a keyboard or a touch screen.</p>
+        <p><a href="keyboard-a11y.html">Back to the simple navigation example</a>.</p>
+
+        <section id="home">
+            <h2>Home</h2>
+            <p>Welcome to our example shop.</p>
+        </section>
+
+        <section id="products">
+            <h2>Products</h2>
+            <section id="laptops">
+                <h3>Laptops</h3>
+                <p>Browse laptops for work and study.</p>
+            </section>
+            <section id="phones">
+                <h3>Phones</h3>
+                <p>Browse our phones.</p>
+            </section>
+            <section id="accessories">
+                <h3>Accessories</h3>
+                <p>Find keyboards, mice, and chargers.</p>
+            </section>
+        </section>
+
+        <section id="about">
+            <h2>About</h2>
+            <p>We help you find technology for everyday use.</p>
+        </section>
+
+        <section id="contact">
+            <h2>Contact</h2>
+            <p><a href="mailto:hello@example.com">Email us</a></p>
+        </section>
+    </main>
+</body>
+</html>

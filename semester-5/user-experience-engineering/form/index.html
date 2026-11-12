@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Schrijf je in voor onze barbecue en laat weten wat je meebrengt.">
+  <title>Schuif aan — BBQ-inschrijving</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="page-shell">
+    <nav class="topbar" aria-label="Paginakop">
+      <a class="wordmark" href="./" aria-label="Schuif aan, startpagina"><span class="brand-mark" aria-hidden="true">?</span> schuif aan<span class="brand-dot">.</span></a>
+      <span class="nav-note"><span class="live-dot" aria-hidden="true"></span> Goed eten begint met goed gezelschap</span>
+    </nav>
+    <main class="layout">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="eyebrow"><span></span> VUUR AAN. ZORGEN UIT.</div>
+        <h1 id="hero-title">Een beetje vuur.<br>Een heleboel<br><em>gezelligheid.</em></h1>
+        <p class="intro">Jij brengt iets lekkers mee.<br>Wij maken plaats aan tafel.</p>
+        <div class="artwork" aria-hidden="true">
+          <div class="art-orbit"></div>
+          <div class="sunburst">?</div>
+          <div class="art-stamp">GOED ETEN<br><span>?</span><br>GOEDE MENSEN</div>
+          <svg class="grill-art" viewBox="0 0 480 330" fill="none">
+            <ellipse cx="232" cy="303" rx="156" ry="13" fill="#303d2b" opacity=".08"/>
+            <g class="steam" stroke="#a6a78a" stroke-width="5" stroke-linecap="round">
+              <path d="M180 112c-25-27 25-31 0-61"/>
+              <path d="M232 100c-25-27 25-31 0-61"/>
+              <path d="M284 112c-25-27 25-31 0-61"/>
+            </g>
+            <path d="M190 215l-33 84m113-84 35 84m-119-23h109" stroke="#303d2b" stroke-width="10" stroke-linecap="round"/>
+            <circle cx="305" cy="297" r="15" fill="#303d2b"/>
+            <circle cx="305" cy="297" r="5" fill="#f6eddb"/>
+            <path d="M111 150h242c-7 69-47 106-121 106S118 219 111 150Z" fill="#e66d40"/>
+            <path d="M129 178c13 38 39 57 74 62" stroke="#f7a178" stroke-width="8" stroke-linecap="round"/>
+            <path d="M110 153H92m262 0h18" stroke="#303d2b" stroke-width="10" stroke-linecap="round"/>
+            <ellipse cx="232" cy="150" rx="122" ry="30" fill="#303d2b"/>
+            <ellipse cx="232" cy="146" rx="108" ry="21" fill="#6a7051"/>
+            <g stroke="#c6c3a1" stroke-width="3"><path d="m153 133 51 33m-29-39 62 40m-29-42 61 39m-25-38 52 32m-21-28 39 24"/></g>
+            <g transform="rotate(-12 216 137)"><rect x="174" y="125" width="77" height="19" rx="9.5" fill="#f5a65b"/><path d="m192 127-4 14m21-14-4 14m22-14-4 14" stroke="#a9512d" stroke-width="3"/></g>
+            <path d="m261 139 45 10" stroke="#e5c69a" stroke-width="4" stroke-linecap="round"/>
+            <path d="m267 132 4 17m8-14 4 17m8-14 4 17" stroke="#c9aa60" stroke-width="10"/>
+            <path d="m376 218 12-12m-5 35 18 3M96 78l-10-11m-8 31-16 2" stroke="#e66d40" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+          <span class="art-caption">Het beste ingredi?nt? Jij.</span>
+        </div>
+        <div class="hero-bottom"><span class="little-star">?</span><p>Neem iets mee.<br><strong>Maak er iets moois van.</strong></p></div>
+      </section>
+      <section class="card" aria-labelledby="form-title">
+        <header class="form-header">
+          <span class="badge">ER IS EEN PLEK VOOR JOU</span>
+          <h2 id="form-title">Ben jij erbij?</h2>
+          <p>Vul je gegevens in en vertel wat je meebrengt.</p>
+        </header>
+    <form id="bbq-form" novalidate>
+      <div class="section-heading"><span>01</span><h3>Even kennismaken</h3><span class="required-note">Alle velden verplicht</span></div>
+      <div class="row">
+        <div class="field">
+          <label for="name">Naam</label>
+          <input id="name" name="name" autocomplete="name" placeholder="Je volledige naam" required aria-describedby="name-error">
+          <p class="error" id="name-error"></p>
+        </div>
+        <div class="field">
+          <label for="email">E-mailadres</label>
+          <input id="email" name="email" type="email" autocomplete="email" placeholder="jij@voorbeeld.be" required aria-describedby="email-error">
+          <p class="error" id="email-error"></p>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="password">Wachtwoord</label>
+        <div class="password-wrap">
+          <input id="password" name="password" type="password" autocomplete="new-password" minlength="8" placeholder="Kies een wachtwoord" required aria-describedby="password-hint password-error">
+          <button type="button" id="toggle-password" class="toggle" aria-controls="password" aria-pressed="false">Toon</button>
+        </div>
+        <p class="hint" id="password-hint">Gebruik minstens 8 tekens.</p>
+        <p class="error" id="password-error"></p>
+      </div>
+
+      <div class="section-heading bring-heading"><span>02</span><h3>Wat zet jij op tafel?</h3></div>
+      <div class="field">
+        <label for="food" id="food-label">Welk vlees neem je mee?</label>
+        <input id="food" name="food" placeholder="Bijvoorbeeld: worstjes, kip of burgers" required aria-describedby="food-error">
+        <p class="error" id="food-error"></p>
+      </div>
+      <div class="field">
+        <label for="drink">Welke drank neem je mee?</label>
+        <input id="drink" name="drink" placeholder="Bijvoorbeeld: limonade, water of bier" required aria-describedby="drink-error">
+        <p class="error" id="drink-error"></p>
+      </div>
+
+      <button class="submit" type="submit">Ik ben erbij <span aria-hidden="true">↗</span></button>
+      <p class="form-note">Dit is een demo. Je gegevens worden niet opgeslagen of verzonden.</p>
+      <div id="success" class="success" role="status" hidden><strong>Helemaal klaar! ?</strong> Alles is correct ingevuld. Tijd om aan te schuiven.</div>
+    </form>
+      </section>
+    </main>
+    <footer class="page-footer"><span>? Schuif aan</span><span>Met liefde geregeld. Met smaak gedeeld.</span><span class="footer-sign">Tot aan tafel ?</span></footer>
+  </div>
+</body>
+</html>

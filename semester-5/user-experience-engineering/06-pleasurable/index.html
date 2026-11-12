@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Perceived performance</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <main>
+    <h1>Productzoeker</h1>
+    <p>Vergelijk twee laadervaringen met dezelfde data en 2,5 seconden extra wachttijd.</p>
+
+    <form id="search-form">
+      <fieldset id="controls">
+        <legend>Zoek en vergelijk</legend>
+        <label for="version">Versie</label>
+        <select id="version">
+          <option value="basic">A — Basic</option>
+          <option value="enhanced">B — Enhanced</option>
+        </select>
+        <label for="query">Productnaam (Engels)</label>
+        <input id="query" type="search" placeholder="Bijvoorbeeld: phone">
+        <button type="submit">Zoeken / opnieuw laden</button>
+      </fieldset>
+    </form>
+
+    <p id="status" role="status" aria-live="polite" aria-atomic="true"></p>
+    <button id="retry" type="button" hidden>Opnieuw proberen</button>
+    <section aria-label="Zoekresultaten" id="results" aria-busy="false">
+      <div id="products" class="grid"></div>
+    </section>
+  </main>
+</body>
+</html>

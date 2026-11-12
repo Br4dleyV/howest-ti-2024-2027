@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>03-reliable</title>
+</head>
+
+<body>
+    <h1>Break the web</h1>
+    <h2>1. Features</h2>
+    <div>
+        <p>Questions per feature:</p>
+        <ul>
+            <li>Explain how to test, change or disable the feature in different browsers.</li>
+            <li>Explain which extensions can be used for this and how easy they are to use.</li>
+            <li>Explain the issues ordinary end-users encounter (we developers are the exception).</li>
+            <li>Highlight the problems, fitures, opinions and research</li>
+            <li>Explain how you could solve or prevent the problems.</li>
+        </ul>
+
+        <p>Chosen websites:</p>
+        <ul>
+            <li><a href="https://stores.delhaize.be/nl/proxy-delhaize-westkerke">Proxy Delhaize Westkerke</a></li>
+            <li><a href="https://www.vbseernegem.be/">VBS
+        </ul>
+
+        <h3>Internetspeed</h3>
+        <p>
+            Proxy Delhaize Westkerke:
+            You can change the internet speed in the Performance tab in DevTools. I couldn't find extensions for it.
+            The website performs good with normal website. Using slow 4G was great, from 3G on it was slower, with LCP
+            of 2.54s. A lot of people have access to 5G, 4G and 3G.
+
+            VBS Eernegem:
+            The website performs really bad on 3G, the rest was very good. It took 5.97s for LCP. 
+        </p>
+
+        <h3>Images</h3>
+        <p>
+            Proxy Delhaize Westkerke:
+            It still uses the same size, but just shows an alt tag. This happens with a slow internet connection or when
+            the image is blocked. You can change the settings in your browser to not load images, but this is not a good
+            idea because it will make the website look bad. There are CDNs that alter images, but this is not always the
+            case. Some internet service providers optimize images, but this is not always the case either.
+
+            VBS Eernegem:
+            When you remove the images, the alt text just says Image, which is not very helpful. The website still works, but it looks bad. The website does use the dimensions of the image that hasn't loaded or couldn't be found yet, so the layout doesn't shift.
+        </p>
+
+        <h3>Custom fonts (icon fonts)</h3>
+        <p>
+            Proxy Delhaize Westkerke:
+            When I block the BreveTitle font using Network tab, it requests again and then it does load. When I block
+            the URL domain, the page does not have any CSS. The site therefore does not function correctly anymore. You
+            see the page with no css. The icon fonts are very popular, Font Awesome is huge. If such a font is blocked,
+            the site will not function correctly. Users can change this themselves by using extensions or changing the
+            settings in their browser. Some people block Google Fonts or everything from Google. Popular extensions that
+            cause this are uBlock Origin and Privacy Badger. People with dyslexia may have difficulty reading text on
+            websites, so they may use extensions that change the font to a more readable one.
+
+            VBS Eernegem:
+            Same as above.
+        </p>
+
+        <h3>Ad/Tracking/Analytics/Content blockers</h3>
+        <p>
+            Proxy Delhaize Westkerke:
+            With an adblocker, nothing changes. Popular blockers are uBlock Origin and Privacy Badger. If you block
+            Google Analytics, the website still works, but the website owner will not be able to see how many people
+            visit the website. Users can easily install extensions for this in their browser. Some people block
+            everything, but this is not very common. The web is still usable, but some websites may not work properly if
+            you block everything.
+
+            VBS Eernegem:
+            Same as above.
+        </p>
+
+        <h3>JavaScript</h3>
+        <p>
+            Proxy Delhaize Westkerke:
+            When I disable JavaScript, the website does not work properly. The map and buttons don't load. The website
+            is not usable without JavaScript. Popular extensions that block JavaScript are NoScript and uMatrix. Some
+            people block everything, but this is not very common. The web is still usable, but some websites may not
+            work properly if you block everything.
+
+            VBS Eernegem:
+            Most of it works, except the menu and winter countdown.
+        </p>
+    </div>
+</body>
+
+</html>
