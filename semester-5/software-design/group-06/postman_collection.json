@@ -1,0 +1,764 @@
+{
+  "info": {
+    "name": "Reading App - Complete API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Single collection for both APIs. Start the Aspire AppHost with Docker Desktop running. Set readingListBaseUrl and readingSummaryBaseUrl to the API endpoints shown in the Aspire dashboard, without trailing slashes. Defaults match the HTTP launch profiles. No separate Postman environment is required. Use HTTPS URLs if HTTP redirects to HTTPS. Run folders in order or run the entire collection. The workflow compares counts with a baseline and works with existing data; avoid concurrent writes. Each full run creates two titles and leaves them finished because the API has no delete endpoint. OpenAPI requests require Development. Health assertions expect healthy dependencies. Postman sends HTTP requests; start/stop services and manage PostgreSQL through Aspire/Docker."
+  },
+  "variable": [
+    {
+      "key": "readingListBaseUrl",
+      "value": "http://localhost:5095",
+      "type": "string"
+    },
+    {
+      "key": "readingSummaryBaseUrl",
+      "value": "http://localhost:5066",
+      "type": "string"
+    },
+    {
+      "key": "titleText",
+      "value": "Clean Code",
+      "type": "string"
+    },
+    {
+      "key": "titleId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "negativeTitleId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "baselineUnread",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "baselineFinished",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "01 - Health",
+      "description": "Liveness, readiness, and the Reading List aggregate health endpoint.",
+      "item": [
+        {
+          "name": "Reading List: /health/live",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": "{{readingListBaseUrl}}/health/live",
+            "description": "Checks that the API process can respond."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Reading List: /health/live\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(pm.response.text()).to.eql('Healthy');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Reading List: /health/ready",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": "{{readingListBaseUrl}}/health/ready",
+            "description": "Checks dependencies. An unavailable dependency returns 503 Unhealthy."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Reading List: /health/ready\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(pm.response.text()).to.eql('Healthy');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Reading List: /health",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": "{{readingListBaseUrl}}/health",
+            "description": "Checks dependencies. An unavailable dependency returns 503 Unhealthy."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Reading List: /health\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(pm.response.text()).to.eql('Healthy');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Reading Summary: /health/live",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": "{{readingSummaryBaseUrl}}/health/live",
+            "description": "Checks that the API process can respond."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Reading Summary: /health/live\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(pm.response.text()).to.eql('Healthy');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Reading Summary: /health/ready",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": "{{readingSummaryBaseUrl}}/health/ready",
+            "description": "Checks dependencies. An unavailable dependency returns 503 Unhealthy."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Reading Summary: /health/ready\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(pm.response.text()).to.eql('Healthy');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "02 - Reading workflow",
+      "description": "Run in order: baseline, create, list, summarize, finish, list, summarize. Create automatically saves titleId. You can also send requests manually or set titleId to select an existing title. Summary delta assertions require the folder sequence and no concurrent writes.",
+      "item": [
+        {
+          "name": "1. Get summary baseline",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{readingSummaryBaseUrl}}/summary"
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.unset('titleId');",
+                  "pm.collectionVariables.unset('baselineUnread');",
+                  "pm.collectionVariables.unset('baselineFinished');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"1. Get summary baseline\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const summary = pm.response.json();",
+                  "    pm.expect(summary.unread).to.be.a('number').and.to.be.at.least(0);",
+                  "    pm.expect(summary.finished).to.be.a('number').and.to.be.at.least(0);",
+                  "    pm.collectionVariables.set('baselineUnread', summary.unread);",
+                  "    pm.collectionVariables.set('baselineFinished', summary.finished);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "2. Create title",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{readingListBaseUrl}}/titles",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"{{titleText}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.unset('titleId');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"2. Create title\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "    const title = pm.response.json();",
+                  "    pm.expect(title.id).to.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);",
+                  "    pm.expect(title.title).to.eql(pm.variables.get('titleText').trim());",
+                  "    pm.expect(title.isRead).to.eql(false);",
+                  "    pm.collectionVariables.set('titleId', title.id);",
+                  "    pm.expect(pm.response.headers.get('Location')).to.eql('/titles/' + pm.collectionVariables.get('titleId'));",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "3. Get titles - verify unread",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{readingListBaseUrl}}/titles"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"3. Get titles - verify unread\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const titles = pm.response.json();",
+                  "    pm.expect(titles).to.be.an('array');",
+                  "    const title = titles.find(item => item.id === pm.collectionVariables.get('titleId'));",
+                  "    pm.expect(title, 'Created title must exist').to.be.an('object');",
+                  "    pm.expect(title.title).to.eql(pm.variables.get('titleText').trim());",
+                  "    pm.expect(title.isRead).to.eql(false);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "4. Get summary - verify unread",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{readingSummaryBaseUrl}}/summary"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"4. Get summary - verify unread\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const summary = pm.response.json();",
+                  "    pm.expect(summary.unread).to.be.a('number').and.to.be.at.least(0);",
+                  "    pm.expect(summary.finished).to.be.a('number').and.to.be.at.least(0);",
+                  "    pm.expect(pm.collectionVariables.get('baselineUnread')).not.to.eql('');",
+                  "    pm.expect(pm.collectionVariables.get('baselineFinished')).not.to.eql('');",
+                  "    pm.expect(summary.unread).to.eql(Number(pm.collectionVariables.get('baselineUnread')) + 1);",
+                  "    pm.expect(summary.finished).to.eql(Number(pm.collectionVariables.get('baselineFinished')));",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "5. Finish title",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{readingListBaseUrl}}/titles/{{titleId}}/finish"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"5. Finish title\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const title = pm.response.json();",
+                  "    pm.expect(title.id).to.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);",
+                  "    pm.expect(title.title).to.eql(pm.variables.get('titleText').trim());",
+                  "    pm.expect(title.isRead).to.eql(true);",
+                  "    pm.expect(title.id).to.eql(pm.collectionVariables.get('titleId'));",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "6. Get titles - verify finished",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{readingListBaseUrl}}/titles"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"6. Get titles - verify finished\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const titles = pm.response.json();",
+                  "    pm.expect(titles).to.be.an('array');",
+                  "    const title = titles.find(item => item.id === pm.collectionVariables.get('titleId'));",
+                  "    pm.expect(title, 'Created title must exist').to.be.an('object');",
+                  "    pm.expect(title.title).to.eql(pm.variables.get('titleText').trim());",
+                  "    pm.expect(title.isRead).to.eql(true);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "7. Get summary - verify finished",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{readingSummaryBaseUrl}}/summary"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"7. Get summary - verify finished\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const summary = pm.response.json();",
+                  "    pm.expect(summary.unread).to.be.a('number').and.to.be.at.least(0);",
+                  "    pm.expect(summary.finished).to.be.a('number').and.to.be.at.least(0);",
+                  "    pm.expect(pm.collectionVariables.get('baselineUnread')).not.to.eql('');",
+                  "    pm.expect(pm.collectionVariables.get('baselineFinished')).not.to.eql('');",
+                  "    pm.expect(summary.unread).to.eql(Number(pm.collectionVariables.get('baselineUnread')));",
+                  "    pm.expect(summary.finished).to.eql(Number(pm.collectionVariables.get('baselineFinished')) + 1);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "03 - Validation and errors",
+      "description": "Run in order. Includes independent setup for repeated finish, using negativeTitleId.",
+      "item": [
+        {
+          "name": "1. Reject whitespace title",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{readingListBaseUrl}}/titles",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"   \"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"1. Reject whitespace title\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "    pm.expect(pm.response.json()).to.contain('Title cannot be empty.');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "2. Reject empty title",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{readingListBaseUrl}}/titles",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"2. Reject empty title\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "    pm.expect(pm.response.json()).to.contain('Title cannot be empty.');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "3. Finish missing title",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{readingListBaseUrl}}/titles/00000000-0000-0000-0000-000000000000/finish"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"3. Finish missing title\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "    pm.expect(pm.response.json()).to.eql('Title with the specified ID was not found.');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "4. Create title for repeated finish",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{readingListBaseUrl}}/titles",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"{{titleText}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.unset('negativeTitleId');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"4. Create title for repeated finish\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "    const title = pm.response.json();",
+                  "    pm.expect(title.id).to.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);",
+                  "    pm.expect(title.title).to.eql(pm.variables.get('titleText').trim());",
+                  "    pm.expect(title.isRead).to.eql(false);",
+                  "    pm.collectionVariables.set('negativeTitleId', title.id);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "5. Finish title once",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{readingListBaseUrl}}/titles/{{negativeTitleId}}/finish"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"5. Finish title once\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const title = pm.response.json();",
+                  "    pm.expect(title.id).to.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);",
+                  "    pm.expect(title.title).to.eql(pm.variables.get('titleText').trim());",
+                  "    pm.expect(title.isRead).to.eql(true);",
+                  "    pm.expect(title.id).to.eql(pm.collectionVariables.get('negativeTitleId'));",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "6. Reject repeated finish",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{readingListBaseUrl}}/titles/{{negativeTitleId}}/finish"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"6. Reject repeated finish\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "    pm.expect(pm.response.json()).to.eql('Title is already marked as read.');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "04 - OpenAPI (Development)",
+      "description": "Available only in the Development environment.",
+      "item": [
+        {
+          "name": "Reading List OpenAPI",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{readingListBaseUrl}}/openapi/v1.json"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Reading List OpenAPI\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const document = pm.response.json();",
+                  "    pm.expect(document.openapi).to.be.a('string');",
+                  "    pm.expect(document.paths).to.have.property('/titles');",
+                  "    pm.expect(document.paths).to.have.property('/titles/{id}/finish');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Reading Summary OpenAPI",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{readingSummaryBaseUrl}}/openapi/v1.json"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Reading Summary OpenAPI\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const document = pm.response.json();",
+                  "    pm.expect(document.openapi).to.be.a('string');",
+                  "    pm.expect(document.paths).to.have.property('/summary');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="Code Coverage">
+        <Configuration>
+          <IncludeTestAssembly>false</IncludeTestAssembly>
+          <CodeCoverage>
+            <ModulePaths>
+              <Include>
+                <!-- Measure our APIs, not dependencies such as Testcontainers. -->
+                <ModulePath>.*[\\/]ReadingList\.Api\.dll$</ModulePath>
+                <ModulePath>.*[\\/]ReadingSummary\.Api\.dll$</ModulePath>
+              </Include>
+            </ModulePaths>
+            <Sources>
+              <Exclude>
+                <!-- Build output and source-generated OpenAPI code. -->
+                <Source>.*[\\/]obj[\\/].*</Source>
+                <Source>.*\.generated\.cs$</Source>
+                <Source>.*\.g\.cs$</Source>
+              </Exclude>
+            </Sources>
+            <Attributes>
+              <Exclude>
+                <Attribute>^System\.CodeDom\.Compiler\.GeneratedCodeAttribute$</Attribute>
+                <Attribute>^System\.Diagnostics\.CodeAnalysis\.ExcludeFromCodeCoverageAttribute$</Attribute>
+              </Exclude>
+            </Attributes>
+          </CodeCoverage>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>
