@@ -1,0 +1,143 @@
+###
+# Hackathon Registration API scenarios
+# Docker Compose exposes the API as localhost:40520 -> container:8000.
+
+@scheme = http
+@host = localhost
+@port = 40520
+@baseUrl = {{scheme}}://{{host}}:{{port}}
+@json = application/json
+
+# Runtime data
+@groupName = Prompt Pirates {{$timestamp}}
+@groupGoal = Build an AI assistant for hackathon judging.
+@unknownGroupId = 999999
+
+###
+# @name createGroup_success
+POST {{baseUrl}}/groups
+Content-Type: {{json}}
+Accept: {{json}}
+
+{
+  "name": "{{groupName}}",
+  "goal": "{{groupGoal}}",
+  "members": [
+    {
+      "firstName": "Ada",
+      "lastName": "Lovelace"
+    },
+    {
+      "firstName": "Alan",
+      "lastName": "Turing"
+    }
+  ]
+}
+
+###
+# @name createGroup_badRequest_tooFewMembers
+POST {{baseUrl}}/groups
+Content-Type: {{json}}
+Accept: {{json}}
+
+{
+  "name": "Solo Squad",
+  "goal": "Break the validation on purpose",
+  "members": [
+    {
+      "firstName": "Only",
+      "lastName": "Member"
+    }
+  ]
+}
+
+###
+# @name listGroups_success
+GET {{baseUrl}}/groups
+Accept: {{json}}
+
+###
+# @name listGoals_success
+GET {{baseUrl}}/groups/goals
+Accept: {{json}}
+
+###
+# @name getGroupById_success
+GET {{baseUrl}}/groups/{{createGroup_success.response.body.$.id}}
+Accept: {{json}}
+
+###
+# @name getGroupById_badRequest_invalidPathParam
+# id must be a positive integer; this should trigger 400.
+GET {{baseUrl}}/groups/abc
+Accept: {{json}}
+
+###
+# @name getGroupById_notFound
+GET {{baseUrl}}/groups/{{unknownGroupId}}
+Accept: {{json}}
+
+###
+# @name updateGroup_success
+PUT {{baseUrl}}/groups/{{createGroup_success.response.body.$.id}}
+Content-Type: {{json}}
+Accept: {{json}}
+
+{
+  "name": "Prompt Pirates Reloaded",
+  "goal": "Ship a production-ready judging assistant.",
+  "members": [
+    {
+      "firstName": "Ada",
+      "lastName": "Lovelace"
+    },
+    {
+      "firstName": "Alan",
+      "lastName": "Turing"
+    },
+    {
+      "firstName": "Grace",
+      "lastName": "Hopper"
+    }
+  ]
+}
+
+###
+# @name updateGroup_badRequest_tooManyMembers
+PUT {{baseUrl}}/groups/{{createGroup_success.response.body.$.id}}
+Content-Type: {{json}}
+Accept: {{json}}
+
+{
+  "name": "Overflow Team",
+  "goal": "Trigger max member validation",
+  "members": [
+    { "firstName": "M1", "lastName": "L1" },
+    { "firstName": "M2", "lastName": "L2" },
+    { "firstName": "M3", "lastName": "L3" },
+    { "firstName": "M4", "lastName": "L4" },
+    { "firstName": "M5", "lastName": "L5" },
+    { "firstName": "M6", "lastName": "L6" }
+  ]
+}
+
+###
+# @name updateGroup_notFound
+PUT {{baseUrl}}/groups/{{unknownGroupId}}
+Content-Type: {{json}}
+Accept: {{json}}
+
+{
+  "name": "Ghost Team",
+  "goal": "This group id does not exist",
+  "members": [
+    {
+      "firstName": "Jane",
+      "lastName": "Doe"
+    },
+    {
+      "firstName": "John",
+      "lastName": "Doe"
+    }
+  ]
+}

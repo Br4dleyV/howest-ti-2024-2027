@@ -1,0 +1,90 @@
+openapi: 3.1.1
+info:
+  title: Simplifyme Hackathon Registration Assistant Web API
+  version: 0.1.0
+  description: HTTP endpoints for assistant features.
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+paths:
+  /api/assistant/scan-hackathon-registration-form:
+    post:
+      summary: Scan a handwritten hackathon registration form image
+      operationId: scanHackathonRegistrationForm
+      tags:
+        - Assistant
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - registrationFormImage
+              properties:
+                registrationFormImage:
+                  type: string
+                  format: binary
+                  description: Hackathon registration form image file (max 5 MB).
+      responses:
+        '200':
+          description: Scan completed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScanHackathonRegistrationFormSuccess'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    ScanHackathonRegistrationFormSuccess:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+    ProblemDetails:
+      type: object
+      required:
+        - type
+        - title
+        - status
+        - detail
+        - instance
+      properties:
+        type:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        instance:
+          type: string
+          format: uri
+  responses:
+    BadRequest:
+      description: Bad request.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    NotFound:
+      description: Not found.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    InternalServerError:
+      description: Internal server error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'

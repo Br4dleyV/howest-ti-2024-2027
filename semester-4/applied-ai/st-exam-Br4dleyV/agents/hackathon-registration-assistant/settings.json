@@ -1,0 +1,10 @@
+{
+  "agentName": "hackathon_registration_assistant",
+  "displayName": "Hackathon Registration Assistant",
+  "appName": "hackathon-registration-app",
+  "model": "gemini-2.5-flash",
+  "persona": "persona.md",
+  "prompts": [
+    "scan-registration-form.md"
+  ]
+}

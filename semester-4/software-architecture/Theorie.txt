@@ -1,0 +1,57 @@
+
+Skip To Quiz Content
+Results
+Bradley VELLE
+5 questions require grading
+Assessment Statistics
+Unknown Score
+--
+Points possible
+Time for this attempt: 25 minutes 19 seconds
+25 minutes 19 seconds25:19
+Time for this attempt
+Your Answers:
+Results for question 1.
+1
+Essay
+Explain the difference between Singleton, Scoped, and Transient lifetimes. When should each be used?
+Waiting for grade
+(response not displayed)
+Waiting for grade
+0 words100 min / 250 max (word limit) Must use at least 100 words
+Results for question 2.
+2
+Essay
+Given the infrastructure modules: WebAPI, Messaging, Persistency, AI Agent. Assign relevant tags to each module.
+
+Tags: Driven, Driving, Primary Adapter, Secondary Adapter, Primary Port, Secondary Port, Triggers use case, Invoked by use case
+When marking the tags Driven or Driving, explain in one sentence why you assigned that tag to the module.
+Waiting for grade
+(response not displayed)
+Waiting for grade
+0 words100 min / 250 max (word limit) Must use at least 100 words
+Results for question 3.
+3
+Essay
+AmqpTopicPublisher implements DomainEventListener. Why is this an interesting hexagonal choice for bridging domain events to integration events?
+Waiting for grade
+(response not displayed)
+Waiting for grade
+0 words100 min / 250 max (word limit) Must use at least 100 words
+Results for question 4.
+4
+Essay
+In microservice architecture, what are the symptoms that services are too small or too large, and why does workflow alignment help find the right boundary?
+Waiting for grade
+(response not displayed)
+Waiting for grade
+0 words100 min / 250 max (word limit) Must use at least 100 words
+Results for question 5.
+5
+Essay
+What is a controller in the context of Ports & Adapters? What is its responsibility? What does it trigger, and what kind of adapter triggers a controller?
+Waiting for grade
+(response not displayed)
+Waiting for grade
+0 words100 min / 250 max (word limit) Must use at least 100 words
+Paragraph applied
