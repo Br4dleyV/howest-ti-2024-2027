@@ -9,9 +9,13 @@ services:
     networks:
       - default
       - skynet_net
+      - howestprime_net
     depends_on:
       - splendor-server
       - skynet-server
+      - howestprime-movies
+      - howestprime-ticketing
+      - howestprime-backoffice
     deploy:
       resources:
         limits:
@@ -90,8 +94,185 @@ services:
         max-size: "10m"
         max-file: "3"
 
+  # --- HOWESTPRIME: PostgreSQL (Movies) ---
+  howestprime-movies-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    env_file:
+      - .howestprime.env
+    volumes:
+      - howestprime_movies_data:/var/lib/postgresql/data
+    networks:
+      - howestprime_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # --- HOWESTPRIME: MongoDB (Ticketing, Replica Set rs0 + Auth) ---
+  howestprime-ticketing-db:
+    image: mongo:7
+    restart: unless-stopped
+    env_file:
+      - .howestprime.env
+    volumes:
+      - howestprime_ticketing_data:/data/db
+    networks:
+      - howestprime_net
+    entrypoint: >
+      bash -c "
+        openssl rand -base64 756 > /data/mongo-keyfile &&
+        chmod 400 /data/mongo-keyfile &&
+        chown mongodb:mongodb /data/mongo-keyfile &&
+        exec docker-entrypoint.sh mongod --port 27017 --replSet rs0 --keyFile /data/mongo-keyfile --wiredTigerCacheSizeGB 0.25 --bind_ip_all
+      "
+    healthcheck:
+      test: >
+        mongosh --port 27017 -u "$${MONGO_INITDB_ROOT_USERNAME}" -p "$${MONGO_INITDB_ROOT_PASSWORD}" --authenticationDatabase admin --quiet --eval '
+          try {
+            if (rs.status().ok !== 1) throw new Error("not initiated");
+          } catch (e) {
+            rs.initiate({ _id: "rs0", members: [{ _id: 0, host: "howestprime-ticketing-db:27017" }] });
+          }
+          db.adminCommand("ping");
+        '
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 25s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # --- HOWESTPRIME: LavinMQ Message Broker ---
+  howestprime-broker:
+    image: cloudamqp/lavinmq:latest
+    restart: unless-stopped
+    networks:
+      - howestprime_net
+    healthcheck:
+      test: ["CMD-SHELL", "lavinmqctl status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 192M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # --- HOWESTPRIME: Movies Microservice (.NET) ---
+  howestprime-movies:
+    build:
+      context: ./semester-4/build-and-deploy-project/st-microservice-movies-Br4dleyV-main
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .howestprime.env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8000
+    depends_on:
+      howestprime-movies-db:
+        condition: service_healthy
+      howestprime-broker:
+        condition: service_healthy
+    networks:
+      - howestprime_net
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 384M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # --- HOWESTPRIME: Ticketing Microservice (Deno) ---
+  howestprime-ticketing:
+    build:
+      context: ./semester-4/build-and-deploy-project/st-microservice-ticketing-Br4dleyV-main
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .howestprime.env
+    depends_on:
+      howestprime-ticketing-db:
+        condition: service_healthy
+      howestprime-broker:
+        condition: service_healthy
+    networks:
+      - howestprime_net
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # --- HOWESTPRIME: Backoffice Client (Blazor Server) ---
+  howestprime-backoffice:
+    build:
+      context: ./semester-4/build-and-deploy-project/st-client-backoffice-Br4dleyV-main
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .howestprime.env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+    volumes:
+      - howestprime_dataprotection:/root/.aspnet/DataProtection-Keys
+    depends_on:
+      - howestprime-movies
+    networks:
+      - howestprime_net
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 384M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
 networks:
   skynet_net:
+  howestprime_net:
 
 volumes:
   skynet_mysql_data:
+  howestprime_movies_data:
+  howestprime_ticketing_data:
+  howestprime_dataprotection:
