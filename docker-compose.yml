@@ -10,6 +10,7 @@ services:
       - default
       - skynet_net
       - howestprime_net
+      - readinglist_net
     depends_on:
       - splendor-server
       - skynet-server
@@ -17,6 +18,8 @@ services:
       - howestprime-ticketing
       - howestprime-backoffice
       - howestprime-webapp
+      - reading-list-api
+      - reading-summary-api
     deploy:
       resources:
         limits:
@@ -287,11 +290,94 @@ services:
         max-size: "10m"
         max-file: "3"
 
+  # --- READINGLIST: PostgreSQL ---
+  readinglist-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    env_file:
+      - .readinglist.env
+    volumes:
+      - readinglist_postgres_data:/var/lib/postgresql/data
+    networks:
+      - readinglist_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # --- READINGLIST: ReadingList.Api (.NET 10) ---
+  reading-list-api:
+    build:
+      context: ./semester-5/software-design/group-06/src
+      dockerfile: ReadingList.Api/Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .readinglist.env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8000
+      - ASPNETCORE_FORWARDEDHEADERS_ENABLED=true
+    depends_on:
+      readinglist-db:
+        condition: service_healthy
+    networks:
+      - readinglist_net
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # --- READINGLIST: ReadingSummary.Api (.NET 10) ---
+  reading-summary-api:
+    build:
+      context: ./semester-5/software-design/group-06/src
+      dockerfile: ReadingSummary.Api/Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .readinglist.env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8000
+      - ASPNETCORE_FORWARDEDHEADERS_ENABLED=true
+    depends_on:
+      - reading-list-api
+    networks:
+      - readinglist_net
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
 networks:
+  readinglist_net:
   skynet_net:
   howestprime_net:
 
 volumes:
+  readinglist_postgres_data:
   skynet_mysql_data:
   howestprime_movies_data:
   howestprime_ticketing_data:
